@@ -51,7 +51,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold mb-1">السعر (اختياري):</label>
+                        <label class="block text-sm font-semibold mb-1">السعر:</label>
                         <input type="text" id="item-price" placeholder="مثال: 100 ر.س" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                     </div>
                     <div>
@@ -67,7 +67,7 @@
             </form>
         </div>
 
-        <!-- 2. إدارة المنتجات والأصناف المنشورة -->
+        <!-- 2. إدارة المنتجات -->
         <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
             <h3 class="text-xl font-bold text-amber-400 mb-4">📋 إدارة الأصناف والمنتجات المنشورة</h3>
             <div id="admin-items-list" class="space-y-4">
@@ -107,144 +107,19 @@
             </form>
         </div>
 
-        <!-- 4. إدارة الإعلانات المنشورة -->
+        <!-- 4. إدارة الإعلانات -->
         <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
             <h3 class="text-xl font-bold text-amber-400 mb-4">📋 إدارة الإعلانات والعروض المنشورة</h3>
             <div id="admin-offers-list" class="space-y-4">
                 <p class="text-zinc-500 text-center">جاري تحميل الإعلانات...</p>
             </div>
         </div>
-
-        <!-- 5. التحكم الشامل -->
-        <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
-            <h3 class="text-xl font-bold text-amber-400 mb-4">🎨 التحكم الشامل بالصفحة الرئيسية والهوية والأرقام</h3>
-            <form id="settings-form" onsubmit="updateSettings(event)" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">اسم المطعم:</label>
-                        <input type="text" id="set-brand" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none" value="SHORO شورو">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">نوع الخط:</label>
-                        <select id="set-font" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
-                            <option value="Cairo">خط كايرو (Cairo)</option>
-                            <option value="Tajawal">خط تجوال (Tajawal)</option>
-                            <option value="Amiri">خط أميري (Amiri)</option>
-                            <option value="Readex Pro">خط رادكس (Readex Pro)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">لون خلفية الموقع:</label>
-                        <input type="color" id="set-bgcolor" value="#09090b" class="w-full h-10 bg-zinc-950 border border-zinc-700 rounded-lg cursor-pointer">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">لون النصوص:</label>
-                        <input type="color" id="set-textcolor" value="#ffffff" class="w-full h-10 bg-zinc-950 border border-zinc-700 rounded-lg cursor-pointer">
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">رقم الطلبات الرئيسي (واتساب):</label>
-                        <input type="text" id="set-order-phone" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none" value="201124793700">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">رقم خدمة التوصيل:</label>
-                        <input type="text" id="set-delivery-phone" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none" value="201124793700">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">العنوان الرئيسي في الواجهة:</label>
-                    <input type="text" id="set-title" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none" value="قرمشة طازجة ومشوية عالفحم">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">الوصف التعريفي بالواجهة:</label>
-                    <textarea id="set-desc" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">استمتع بأشهى أطباق البيتزا والبروست والمشاوي والكريب المصنوعة بجودة عالية.</textarea>
-                </div>
-                <button type="submit" id="btn-settings" class="w-full bg-zinc-800 text-white font-bold py-3 rounded-lg hover:bg-zinc-700 transition">حفظ وتطبيق التعديلات فوراً</button>
-            </form>
-        </div>
     </div>
 
-    <!-- نافذة تعديل المنتج -->
-    <div id="edit-item-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
-        <div class="bg-zinc-900 border border-zinc-700 max-w-lg w-full p-6 rounded-2xl relative shadow-2xl">
-            <h3 class="text-xl font-bold text-amber-400 mb-4">✏️ تعديل المنتج</h3>
-            <form id="edit-item-form" onsubmit="saveEditedItem(event)" class="space-y-4">
-                <input type="hidden" id="edit-item-id">
-                <div>
-                    <label class="block text-sm font-semibold mb-1">اسم الصنف:</label>
-                    <input type="text" id="edit-item-name" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">القسم:</label>
-                    <select id="edit-item-category" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
-                        <option value="pizza">بيتزا</option>
-                        <option value="broast">بروست</option>
-                        <option value="grills">مشاوي</option>
-                        <option value="crepe">🌮 الكريب</option>
-                        <option value="family">الوجبات العائلية</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">السعر:</label>
-                    <input type="text" id="edit-item-price" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">رابط الصورة (URL مباشر):</label>
-                    <input type="text" id="edit-item-image" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">وصف الصنف:</label>
-                    <textarea id="edit-item-desc" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none"></textarea>
-                </div>
-                <div class="flex gap-4">
-                    <button type="submit" class="flex-1 bg-amber-500 text-zinc-950 font-bold py-3 rounded-lg">حفظ</button>
-                    <button type="button" onclick="closeEditItemModal()" class="flex-1 bg-zinc-800 text-white font-bold py-3 rounded-lg">إلغاء</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- نافذة تعديل العرض -->
-    <div id="edit-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
-        <div class="bg-zinc-900 border border-zinc-700 max-w-lg w-full p-6 rounded-2xl relative shadow-2xl">
-            <h3 class="text-xl font-bold text-amber-400 mb-4">✏️ تعديل الإعلان أو العرض</h3>
-            <form id="edit-offer-form" onsubmit="saveEditedOffer(event)" class="space-y-4">
-                <input type="hidden" id="edit-offer-id">
-                <div>
-                    <label class="block text-sm font-semibold mb-1">عنوان العرض:</label>
-                    <input type="text" id="edit-offer-title" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">سعر العرض:</label>
-                    <input type="text" id="edit-offer-price" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">رابط الصورة (URL مباشر):</label>
-                    <input type="text" id="edit-offer-image" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">وقت انتهاء العرض:</label>
-                    <input type="datetime-local" id="edit-offer-time" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">وصف العرض:</label>
-                    <textarea id="edit-offer-desc" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none"></textarea>
-                </div>
-                <div class="flex gap-4">
-                    <button type="submit" class="flex-1 bg-amber-500 text-zinc-950 font-bold py-3 rounded-lg">حفظ</button>
-                    <button type="button" onclick="closeEditModal()" class="flex-1 bg-zinc-800 text-white font-bold py-3 rounded-lg">إلغاء</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    <!-- سكربت الاتصال المباشر بـ Firebase Realtime Database -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, set, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getDatabase, ref, push, set, remove, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyABqdG2ML5sMGUlbbakQs1IIqWwc3eBMFY",
@@ -253,17 +128,12 @@
             projectId: "shoro-e4227",
             storageBucket: "shoro-e4227.firebasestorage.app",
             messagingSenderId: "436007487301",
-            appId: "1:436007487301:web:c8eb7587636f7117dae02c",
-            measurementId: "G-8F3ZQRSKL7"
+            appId: "1:436007487301:web:c8eb7587636f7117dae02c"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const analytics = getAnalytics(app);
         const ADMIN_PASS = "1234";
-
-        let cachedItems = {};
-        let cachedOffers = {};
 
         window.checkLogin = function(event) {
             event.preventDefault();
@@ -273,7 +143,6 @@
                 document.getElementById('admin-dashboard').style.display = 'block';
                 loadAdminItems();
                 loadAdminOffers();
-                loadSettingsToForm();
             } else {
                 alert('كلمة المرور غير صحيحة! (استخدم 1234)');
             }
@@ -294,10 +163,10 @@
                     desc: document.getElementById('item-desc').value,
                     createdAt: Date.now()
                 });
-                alert('✅ تم نشر المنتج في نفس الثانية!');
+                alert('✅ تم نشر المنتج بنجاح في قاعدة البيانات!');
                 document.getElementById('add-item-form').reset();
             } catch(e) {
-                alert('خطأ: ' + e.message);
+                alert('خطأ أثناء النشر: ' + e.message);
             } finally {
                 btn.innerText = "إضافة ونشر المنتج فوراً";
             }
@@ -318,10 +187,10 @@
                     desc: document.getElementById('offer-desc').value,
                     createdAt: Date.now()
                 });
-                alert('🔥 تم نشر العرض وتفعيله في نفس الثانية!');
+                alert('🔥 تم نشر العرض بنجاح في قاعدة البيانات!');
                 document.getElementById('add-offer-form').reset();
             } catch(e) {
-                alert('خطأ: ' + e.message);
+                alert('خطأ أثناء النشر: ' + e.message);
             } finally {
                 btn.innerText = "تفعيل ونشر العرض فوراً";
             }
@@ -336,23 +205,15 @@
                     container.innerHTML = `<p class="text-zinc-500 text-center py-4">لا توجد منتجات منشورة حالياً.</p>`;
                     return;
                 }
-                cachedItems = data;
                 Object.keys(data).reverse().forEach(key => {
                     const item = data[key];
-                    const imgThumb = (item.images && item.images.length > 0) ? item.images[0] : '';
                     container.innerHTML += `
                         <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-xl flex items-center justify-between gap-4">
-                            <div class="flex items-center gap-3">
-                                ${imgThumb ? `<img src="${imgThumb}" class="w-12 h-12 object-cover rounded-lg border border-zinc-700">` : '<div class="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center text-xs">بدون</div>'}
-                                <div>
-                                    <h4 class="font-bold text-amber-400 text-sm">${item.name}</h4>
-                                    <span class="text-xs text-zinc-400">القسم: ${item.category} | السعر: ${item.price || 'غير محدد'}</span>
-                                </div>
+                            <div>
+                                <h4 class="font-bold text-amber-400 text-sm">${item.name}</h4>
+                                <span class="text-xs text-zinc-400">القسم: ${item.category} | السعر: ${item.price || 'غير محدد'}</span>
                             </div>
-                            <div class="flex gap-2">
-                                <button onclick="openEditItemModal('${key}')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-zinc-950 px-3 py-1.5 rounded-lg text-xs font-bold transition">✏️ تعديل</button>
-                                <button onclick="deleteItem('${key}')" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">🗑️ حذف</button>
-                            </div>
+                            <button onclick="deleteItem('${key}')" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">🗑️ حذف</button>
                         </div>
                     `;
                 });
@@ -365,25 +226,18 @@
                 container.innerHTML = '';
                 const data = snapshot.val();
                 if (!data) {
-                    container.innerHTML = `<p class="text-zinc-500 text-center py-4">لا توجد إعلانات أو عروض منشورة حالياً.</p>`;
+                    container.innerHTML = `<p class="text-zinc-500 text-center py-4">لا توجد إعلانات منشورة حالياً.</p>`;
                     return;
                 }
-                cachedOffers = data;
                 Object.keys(data).reverse().forEach(key => {
                     const offer = data[key];
-                    const imgThumb = (offer.images && offer.images.length > 0) ? offer.images[0] : '';
                     container.innerHTML += `
                         <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-xl flex items-center justify-between gap-4">
-                            <div class="flex items-center gap-3">
-                                ${imgThumb ? `<img src="${imgThumb}" class="w-12 h-12 object-cover rounded-lg border border-zinc-700">` : '<div class="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center text-xs">بدون</div>'}
-                                <div>
-                                    <h4 class="font-bold text-amber-400 text-sm">${offer.title}</h4>
-                                    <span class="text-xs text-zinc-400">السعر: ${offer.price} | ينتهي: ${offer.endTime.replace('T', ' ')}</span>
-                                </div>
+                            <div>
+                                <h4 class="font-bold text-amber-400 text-sm">${offer.title}</h4>
+                                <span class="text-xs text-zinc-400">السعر: ${offer.price}</span>
                             </div>
-                            <div class="flex gap-2">
-                                <button onclick="deleteOffer('${key}')" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">🗑️ حذف</button>
-                            </div>
+                            <button onclick="deleteOffer('${key}')" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">🗑️ حذف</button>
                         </div>
                     `;
                 });
@@ -391,79 +245,17 @@
         }
 
         window.deleteItem = async function(id) {
-            if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+            if (confirm('هل أنت متأكد من الحذف؟')) {
                 await remove(ref(db, `menu_items/${id}`));
                 alert('🗑 تم الحذف بنجاح.');
             }
         }
 
         window.deleteOffer = async function(id) {
-            if (confirm('هل أنت متأكد من حذف هذا الإعلان؟')) {
+            if (confirm('هل أنت متأكد من الحذف؟')) {
                 await remove(ref(db, `offers/${id}`));
                 alert('🗑 تم الحذف بنجاح.');
             }
-        }
-
-        window.openEditItemModal = function(id) {
-            const item = cachedItems[id];
-            if (!item) return;
-            document.getElementById('edit-item-id').value = id;
-            document.getElementById('edit-item-name').value = item.name;
-            document.getElementById('edit-item-category').value = item.category;
-            document.getElementById('edit-item-price').value = item.price || '';
-            document.getElementById('edit-item-image').value = (item.images && item.images[0]) ? item.images[0] : '';
-            document.getElementById('edit-item-desc').value = item.desc || '';
-            document.getElementById('edit-item-modal').style.display = 'flex';
-        }
-
-        window.closeEditItemModal = function() {
-            document.getElementById('edit-item-modal').style.display = 'none';
-        }
-
-        window.saveEditedItem = async function(event) {
-            event.preventDefault();
-            const id = document.getElementById('edit-item-id').value;
-            const imgUrl = document.getElementById('edit-item-image').value.trim();
-            await update(ref(db, `menu_items/${id}`), {
-                name: document.getElementById('edit-item-name').value,
-                category: document.getElementById('edit-item-category').value,
-                price: document.getElementById('edit-item-price').value || '',
-                images: imgUrl ? [imgUrl] : [],
-                desc: document.getElementById('edit-item-desc').value
-            });
-            alert('✅ تم التحديث بنجاح!');
-            closeEditItemModal();
-        }
-
-        function loadSettingsToForm() {
-            onValue(ref(db, 'settings'), (snapshot) => {
-                const s = snapshot.val();
-                if (s) {
-                    if(s.brandName) document.getElementById('set-brand').value = s.brandName;
-                    if(s.heroTitle) document.getElementById('set-title').value = s.heroTitle;
-                    if(s.heroDesc) document.getElementById('set-desc').value = s.heroDesc;
-                    if(s.fontFamily) document.getElementById('set-font').value = s.fontFamily;
-                    if(s.bgColor) document.getElementById('set-bgcolor').value = s.bgColor;
-                    if(s.textColor) document.getElementById('set-textcolor').value = s.textColor;
-                    if(s.orderPhone) document.getElementById('set-order-phone').value = s.orderPhone;
-                    if(s.deliveryPhone) document.getElementById('set-delivery-phone').value = s.deliveryPhone;
-                }
-            }, { onlyOnce: true });
-        }
-
-        window.updateSettings = async function(event) {
-            event.preventDefault();
-            await set(ref(db, 'settings'), {
-                brandName: document.getElementById('set-brand').value,
-                heroTitle: document.getElementById('set-title').value,
-                heroDesc: document.getElementById('set-desc').value,
-                fontFamily: document.getElementById('set-font').value,
-                bgColor: document.getElementById('set-bgcolor').value,
-                textColor: document.getElementById('set-textcolor').value,
-                orderPhone: document.getElementById('set-order-phone').value,
-                deliveryPhone: document.getElementById('set-delivery-phone').value
-            });
-            alert('✅ تم تحديث إعدادات المتجر فوراً!');
         }
     </script>
 </body>
