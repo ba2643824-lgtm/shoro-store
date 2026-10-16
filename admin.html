@@ -75,7 +75,7 @@
             </div>
         </div>
 
-        <!-- 3. إضافة عرض جديد (قسم العروض كما هو) -->
+        <!-- 3. إضافة عرض جديد -->
         <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
             <h3 class="text-xl font-bold text-amber-400 mb-4">🔥 إضافة إعلان أو عرض جديد</h3>
             <form id="add-offer-form" onsubmit="addOffer(event)" class="space-y-4">
@@ -255,19 +255,22 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, set, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "car-orders.firebaseapp.com",
-            databaseURL: "https://car-orders-default-rtdb.firebaseio.com",
-            projectId: "car-orders",
-            storageBucket: "car-orders.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyABqdG2ML5sMGUlbbakQs1IIqWwc3eBMFY",
+            authDomain: "shoro-e4227.firebaseapp.com",
+            databaseURL: "https://shoro-e4227-default-rtdb.firebaseio.com",
+            projectId: "shoro-e4227",
+            storageBucket: "shoro-e4227.firebasestorage.app",
+            messagingSenderId: "436007487301",
+            appId: "1:436007487301:web:c8eb7587636f7117dae02c",
+            measurementId: "G-8F3ZQRSKL7"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const analytics = getAnalytics(app);
         const ADMIN_PASS = "1234";
 
         let cachedItems = {};
@@ -436,6 +439,11 @@
                     toggleContainer.style.display = 'none';
                 }
             });
+        }
+
+        window.toggleShowAllOffers = function() {
+            showAllOffersFlag = !showAllOffersFlag;
+            loadAdminOffers();
         }
 
         window.deleteItem = async function(id) {
