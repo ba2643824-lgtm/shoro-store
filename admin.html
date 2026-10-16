@@ -52,11 +52,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold mb-1">السعر (اختياري):</label>
-                        <input type="text" id="item-price" placeholder="مثال: 100 ر.س (اختياري)" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
+                        <input type="text" id="item-price" placeholder="مثال: 100 ر.س" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">صور المنتج (صورة أو عدة صور):</label>
-                        <input type="file" id="item-images-file" accept="image/*" multiple class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm file:bg-amber-500 file:text-zinc-950 file:border-0 file:rounded-md file:px-3 file:py-1 file:font-bold">
+                        <label class="block text-sm font-semibold mb-1">رابط الصورة (URL مباشر):</label>
+                        <input type="text" id="item-image-url" placeholder="ضع رابط صورة مباشر هنا (اختياري)" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                     </div>
                 </div>
                 <div>
@@ -91,8 +91,8 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold mb-1">صور العرض (صورة أو عدة صور):</label>
-                        <input type="file" id="offer-images-file" accept="image/*" multiple class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm file:bg-red-500 file:text-white file:border-0 file:rounded-md file:px-3 file:py-1 file:font-bold">
+                        <label class="block text-sm font-semibold mb-1">رابط صورة العرض (URL مباشر):</label>
+                        <input type="text" id="offer-image-url" placeholder="ضع رابط صورة مباشر هنا (اختياري)" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">وقت انتهاء العرض:</label>
@@ -113,9 +113,6 @@
             <div id="admin-offers-list" class="space-y-4">
                 <p class="text-zinc-500 text-center">جاري تحميل الإعلانات...</p>
             </div>
-            <div id="offers-toggle-container" class="text-center mt-4 hidden">
-                <button onclick="toggleShowAllOffers()" id="toggle-offers-btn" class="bg-zinc-800 hover:bg-zinc-700 text-amber-400 font-bold px-6 py-2 rounded-xl transition text-sm">عرض المزيد (المزيد من الإعلانات)</button>
-            </div>
         </div>
 
         <!-- 5. التحكم الشامل -->
@@ -124,7 +121,7 @@
             <form id="settings-form" onsubmit="updateSettings(event)" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold mb-1">اسم المطعم (العلامة التجارية):</label>
+                        <label class="block text-sm font-semibold mb-1">اسم المطعم:</label>
                         <input type="text" id="set-brand" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none" value="SHORO شورو">
                     </div>
                     <div>
@@ -153,7 +150,7 @@
                         <input type="text" id="set-order-phone" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none" value="201124793700">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">رقم خدمة التوصيل (الزر الدائري):</label>
+                        <label class="block text-sm font-semibold mb-1">رقم خدمة التوصيل:</label>
                         <input type="text" id="set-delivery-phone" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none" value="201124793700">
                     </div>
                 </div>
@@ -170,10 +167,10 @@
         </div>
     </div>
 
-    <!-- نافذة تعديل المنتج أو الصنف -->
+    <!-- نافذة تعديل المنتج -->
     <div id="edit-item-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
-        <div class="bg-zinc-900 border border-zinc-700 max-w-lg w-full p-6 rounded-2xl relative shadow-2xl max-h-[90vh] overflow-y-auto">
-            <h3 class="text-xl font-bold text-amber-400 mb-4">✏️ تعديل المنتج أو الصنف</h3>
+        <div class="bg-zinc-900 border border-zinc-700 max-w-lg w-full p-6 rounded-2xl relative shadow-2xl">
+            <h3 class="text-xl font-bold text-amber-400 mb-4">✏️ تعديل المنتج</h3>
             <form id="edit-item-form" onsubmit="saveEditedItem(event)" class="space-y-4">
                 <input type="hidden" id="edit-item-id">
                 <div>
@@ -191,24 +188,20 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-1">السعر (اختياري):</label>
+                    <label class="block text-sm font-semibold mb-1">السعر:</label>
                     <input type="text" id="edit-item-price" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-2">صور المنتج الحالية (اضغط ❌ لحذف أي صورة):</label>
-                    <div id="current-item-images-container" class="flex gap-2 flex-wrap bg-zinc-950 p-3 rounded-xl border border-zinc-800 mb-2"></div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">إضافة صور جديدة:</label>
-                    <input type="file" id="edit-item-new-images" accept="image/*" multiple class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm file:bg-amber-500 file:text-zinc-950 file:border-0 file:rounded-md file:px-3 file:py-1 file:font-bold">
+                    <label class="block text-sm font-semibold mb-1">رابط الصورة (URL مباشر):</label>
+                    <input type="text" id="edit-item-image" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold mb-1">وصف الصنف:</label>
                     <textarea id="edit-item-desc" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none"></textarea>
                 </div>
                 <div class="flex gap-4">
-                    <button type="submit" class="flex-1 bg-amber-500 text-zinc-950 font-bold py-3 rounded-lg hover:bg-amber-400 transition">حفظ التعديلات</button>
-                    <button type="button" onclick="closeEditItemModal()" class="flex-1 bg-zinc-800 text-white font-bold py-3 rounded-lg hover:bg-zinc-700 transition">إلغاء</button>
+                    <button type="submit" class="flex-1 bg-amber-500 text-zinc-950 font-bold py-3 rounded-lg">حفظ</button>
+                    <button type="button" onclick="closeEditItemModal()" class="flex-1 bg-zinc-800 text-white font-bold py-3 rounded-lg">إلغاء</button>
                 </div>
             </form>
         </div>
@@ -216,8 +209,8 @@
 
     <!-- نافذة تعديل العرض -->
     <div id="edit-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
-        <div class="bg-zinc-900 border border-zinc-700 max-w-lg w-full p-6 rounded-2xl relative shadow-2xl max-h-[90vh] overflow-y-auto">
-            <h3 class="text-xl font-bold text-amber-400 mb-4">✏️ تعديل الإعلان أو العرض (حذف أو إضافة صور)</h3>
+        <div class="bg-zinc-900 border border-zinc-700 max-w-lg w-full p-6 rounded-2xl relative shadow-2xl">
+            <h3 class="text-xl font-bold text-amber-400 mb-4">✏️ تعديل الإعلان أو العرض</h3>
             <form id="edit-offer-form" onsubmit="saveEditedOffer(event)" class="space-y-4">
                 <input type="hidden" id="edit-offer-id">
                 <div>
@@ -229,12 +222,8 @@
                     <input type="text" id="edit-offer-price" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-2">الصور الحالية للإعلان (اضغط ❌ لحذف أي صورة):</label>
-                    <div id="current-images-container" class="flex gap-2 flex-wrap bg-zinc-950 p-3 rounded-xl border border-zinc-800 mb-2"></div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">إضافة صور جديدة للإعلان:</label>
-                    <input type="file" id="edit-offer-images" accept="image/*" multiple class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm file:bg-amber-500 file:text-zinc-950 file:border-0 file:rounded-md file:px-3 file:py-1 file:font-bold">
+                    <label class="block text-sm font-semibold mb-1">رابط الصورة (URL مباشر):</label>
+                    <input type="text" id="edit-offer-image" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                 </div>
                 <div>
                     <label class="block text-sm font-semibold mb-1">وقت انتهاء العرض:</label>
@@ -245,8 +234,8 @@
                     <textarea id="edit-offer-desc" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none"></textarea>
                 </div>
                 <div class="flex gap-4">
-                    <button type="submit" class="flex-1 bg-amber-500 text-zinc-950 font-bold py-3 rounded-lg hover:bg-amber-400 transition">حفظ التعديلات</button>
-                    <button type="button" onclick="closeEditModal()" class="flex-1 bg-zinc-800 text-white font-bold py-3 rounded-lg hover:bg-zinc-700 transition">إلغاء</button>
+                    <button type="submit" class="flex-1 bg-amber-500 text-zinc-950 font-bold py-3 rounded-lg">حفظ</button>
+                    <button type="button" onclick="closeEditModal()" class="flex-1 bg-zinc-800 text-white font-bold py-3 rounded-lg">إلغاء</button>
                 </div>
             </form>
         </div>
@@ -275,9 +264,6 @@
 
         let cachedItems = {};
         let cachedOffers = {};
-        let editingItemImages = [];
-        let editingOfferImages = [];
-        let showAllOffersFlag = false;
 
         window.checkLogin = function(event) {
             event.preventDefault();
@@ -293,80 +279,27 @@
             }
         }
 
-        // دالة ضغط فائقة السرعة تضمن عدم تعليق الزر نهائياً
-        function compressImage(file) {
-            return new Promise((resolve) => {
-                if (!file) { resolve(""); return; }
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 400; // تصغير المقاس لسرعة فائقة
-                        const MAX_HEIGHT = 400;
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height) {
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
-                            }
-                        } else {
-                            if (height > MAX_HEIGHT) {
-                                width *= MAX_HEIGHT / height;
-                                height = MAX_HEIGHT;
-                            }
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.5)); // جودة 50% لسرعة فورية
-                    };
-                    img.onerror = () => resolve("");
-                };
-                reader.onerror = () => resolve("");
-            });
-        }
-
-        async function readFileAsBase64(file) {
-            return await compressImage(file);
-        }
-
         window.addItem = async function(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-item');
             btn.innerText = "جاري النشر الفوري...";
-            btn.disabled = true;
             try {
-                const fileInput = document.getElementById('item-images-file');
-                let imageUrls = [];
-                if (fileInput.files.length > 0) {
-                    for (let i = 0; i < fileInput.files.length; i++) {
-                        let base64Img = await readFileAsBase64(fileInput.files[i]);
-                        if(base64Img) imageUrls.push(base64Img);
-                    }
-                }
+                const imgUrl = document.getElementById('item-image-url').value.trim();
                 const newRef = push(ref(db, 'menu_items'));
                 await set(newRef, {
                     name: document.getElementById('item-name').value,
                     category: document.getElementById('item-category').value,
                     price: document.getElementById('item-price').value || '',
-                    images: imageUrls,
+                    images: imgUrl ? [imgUrl] : [],
                     desc: document.getElementById('item-desc').value,
                     createdAt: Date.now()
                 });
-                alert('✅ تم نشر المنتج والصوره في نفس الثانية!');
+                alert('✅ تم نشر المنتج في نفس الثانية!');
                 document.getElementById('add-item-form').reset();
             } catch(e) {
                 alert('خطأ: ' + e.message);
             } finally {
                 btn.innerText = "إضافة ونشر المنتج فوراً";
-                btn.disabled = false;
             }
         }
 
@@ -374,21 +307,13 @@
             event.preventDefault();
             const btn = document.getElementById('btn-offer');
             btn.innerText = "جاري نشر العرض...";
-            btn.disabled = true;
             try {
-                const fileInput = document.getElementById('offer-images-file');
-                let imageUrls = [];
-                if (fileInput.files.length > 0) {
-                    for (let i = 0; i < fileInput.files.length; i++) {
-                        let base64Img = await readFileAsBase64(fileInput.files[i]);
-                        if(base64Img) imageUrls.push(base64Img);
-                    }
-                }
+                const imgUrl = document.getElementById('offer-image-url').value.trim();
                 const newRef = push(ref(db, 'offers'));
                 await set(newRef, {
                     title: document.getElementById('offer-title').value,
                     price: document.getElementById('offer-price').value,
-                    images: imageUrls,
+                    images: imgUrl ? [imgUrl] : [],
                     endTime: document.getElementById('offer-time').value,
                     desc: document.getElementById('offer-desc').value,
                     createdAt: Date.now()
@@ -399,7 +324,6 @@
                 alert('خطأ: ' + e.message);
             } finally {
                 btn.innerText = "تفعيل ونشر العرض فوراً";
-                btn.disabled = false;
             }
         }
 
@@ -438,19 +362,14 @@
         function loadAdminOffers() {
             onValue(ref(db, 'offers'), (snapshot) => {
                 const container = document.getElementById('admin-offers-list');
-                const toggleContainer = document.getElementById('offers-toggle-container');
                 container.innerHTML = '';
                 const data = snapshot.val();
                 if (!data) {
                     container.innerHTML = `<p class="text-zinc-500 text-center py-4">لا توجد إعلانات أو عروض منشورة حالياً.</p>`;
-                    toggleContainer.style.display = 'none';
                     return;
                 }
                 cachedOffers = data;
-                const keys = Object.keys(data).reverse();
-                const displayKeys = showAllOffersFlag ? keys : keys.slice(0, 5);
-
-                displayKeys.forEach(key => {
+                Object.keys(data).reverse().forEach(key => {
                     const offer = data[key];
                     const imgThumb = (offer.images && offer.images.length > 0) ? offer.images[0] : '';
                     container.innerHTML += `
@@ -463,46 +382,25 @@
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <button onclick="openEditModal('${key}')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-zinc-950 px-3 py-1.5 rounded-lg text-xs font-bold transition">✏️ تعديل</button>
                                 <button onclick="deleteOffer('${key}')" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">🗑️ حذف</button>
                             </div>
                         </div>
                     `;
                 });
-
-                if (keys.length > 5) {
-                    toggleContainer.style.display = 'block';
-                    document.getElementById('toggle-offers-btn').innerText = showAllOffersFlag ? 'إخفاء (عرض 5 فقط)' : `عرض المزيد (${keys.length - 5} إعلانات إضافية)`;
-                } else {
-                    toggleContainer.style.display = 'none';
-                }
             });
         }
 
-        window.toggleShowAllOffers = function() {
-            showAllOffersFlag = !showAllOffersFlag;
-            loadAdminOffers();
-        }
-
         window.deleteItem = async function(id) {
-            if (confirm('هل أنت متأكد من حذف هذا المنتج نهائياً؟')) {
-                try {
-                    await remove(ref(db, `menu_items/${id}`));
-                    alert('🗑 تم حذف المنتج بنجاح واختفى من الصفحة الرئيسية في نفس الثانية.');
-                } catch(e) {
-                    alert('خطأ أثناء الحذف: ' + e.message);
-                }
+            if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+                await remove(ref(db, `menu_items/${id}`));
+                alert('🗑 تم الحذف بنجاح.');
             }
         }
 
         window.deleteOffer = async function(id) {
-            if (confirm('هل أنت متأكد من حذف هذا الإعلان نهائياً؟')) {
-                try {
-                    await remove(ref(db, `offers/${id}`));
-                    alert('🗑 تم الحذف بنجاح.');
-                } catch(e) {
-                    alert('خطأ أثناء الحذف: ' + e.message);
-                }
+            if (confirm('هل أنت متأكد من حذف هذا الإعلان؟')) {
+                await remove(ref(db, `offers/${id}`));
+                alert('🗑 تم الحذف بنجاح.');
             }
         }
 
@@ -513,32 +411,9 @@
             document.getElementById('edit-item-name').value = item.name;
             document.getElementById('edit-item-category').value = item.category;
             document.getElementById('edit-item-price').value = item.price || '';
+            document.getElementById('edit-item-image').value = (item.images && item.images[0]) ? item.images[0] : '';
             document.getElementById('edit-item-desc').value = item.desc || '';
-            editingItemImages = item.images ? [...item.images] : [];
-            renderEditItemImages();
             document.getElementById('edit-item-modal').style.display = 'flex';
-        }
-
-        function renderEditItemImages() {
-            const container = document.getElementById('current-item-images-container');
-            container.innerHTML = '';
-            if (editingItemImages.length === 0) {
-                container.innerHTML = `<span class="text-zinc-500 text-xs">لا توجد صور حالية. أضف صور جديدة أدناه.</span>`;
-                return;
-            }
-            editingItemImages.forEach((imgUrl, index) => {
-                container.innerHTML += `
-                    <div class="relative w-16 h-16 border border-zinc-700 rounded-lg overflow-hidden group bg-black">
-                        <img src="${imgUrl}" class="w-full h-full object-cover">
-                        <button type="button" onclick="removeEditItemImage(${index})" class="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-[10px] font-bold rounded-bl hover:bg-red-500">✕</button>
-                    </div>
-                `;
-            });
-        }
-
-        window.removeEditItemImage = function(index) {
-            editingItemImages.splice(index, 1);
-            renderEditItemImages();
         }
 
         window.closeEditItemModal = function() {
@@ -548,90 +423,16 @@
         window.saveEditedItem = async function(event) {
             event.preventDefault();
             const id = document.getElementById('edit-item-id').value;
-            const fileInput = document.getElementById('edit-item-new-images');
-            try {
-                if (fileInput.files.length > 0) {
-                    for (let i = 0; i < fileInput.files.length; i++) {
-                        let base64Img = await readFileAsBase64(fileInput.files[i]);
-                        if(base64Img) editingItemImages.push(base64Img);
-                    }
-                }
-                await update(ref(db, `menu_items/${id}`), {
-                    name: document.getElementById('edit-item-name').value,
-                    category: document.getElementById('edit-item-category').value,
-                    price: document.getElementById('edit-item-price').value || '',
-                    images: editingItemImages,
-                    desc: document.getElementById('edit-item-desc').value
-                });
-                alert('✅ تم تحديث المنتج بنجاح!');
-                closeEditItemModal();
-            } catch(e) {
-                alert('خطأ: ' + e.message);
-            }
-        }
-
-        window.openEditModal = function(id) {
-            const offer = cachedOffers[id];
-            if (!offer) return;
-            document.getElementById('edit-offer-id').value = id;
-            document.getElementById('edit-offer-title').value = offer.title;
-            document.getElementById('edit-offer-price').value = offer.price;
-            document.getElementById('edit-offer-time').value = offer.endTime;
-            document.getElementById('edit-offer-desc').value = offer.desc || '';
-            editingOfferImages = offer.images ? [...offer.images] : [];
-            renderCurrentEditImages();
-            document.getElementById('edit-modal').style.display = 'flex';
-        }
-
-        function renderCurrentEditImages() {
-            const container = document.getElementById('current-images-container');
-            container.innerHTML = '';
-            if (editingOfferImages.length === 0) {
-                container.innerHTML = `<span class="text-zinc-500 text-xs">لا توجد صور حالية. أضف صور جديدة أدناه.</span>`;
-                return;
-            }
-            editingOfferImages.forEach((imgUrl, index) => {
-                container.innerHTML += `
-                    <div class="relative w-16 h-16 border border-zinc-700 rounded-lg overflow-hidden group bg-black">
-                        <img src="${imgUrl}" class="w-full h-full object-cover">
-                        <button type="button" onclick="removeEditImage(${index})" class="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-[10px] font-bold rounded-bl hover:bg-red-500" title="حذف الصورة">✕</button>
-                    </div>
-                `;
+            const imgUrl = document.getElementById('edit-item-image').value.trim();
+            await update(ref(db, `menu_items/${id}`), {
+                name: document.getElementById('edit-item-name').value,
+                category: document.getElementById('edit-item-category').value,
+                price: document.getElementById('edit-item-price').value || '',
+                images: imgUrl ? [imgUrl] : [],
+                desc: document.getElementById('edit-item-desc').value
             });
-        }
-
-        window.removeEditImage = function(index) {
-            editingOfferImages.splice(index, 1);
-            renderCurrentEditImages();
-        }
-
-        window.closeEditModal = function() {
-            document.getElementById('edit-modal').style.display = 'none';
-        }
-
-        window.saveEditedOffer = async function(event) {
-            event.preventDefault();
-            const id = document.getElementById('edit-offer-id').value;
-            const fileInput = document.getElementById('edit-offer-images');
-            try {
-                if (fileInput.files.length > 0) {
-                    for (let i = 0; i < fileInput.files.length; i++) {
-                        let base64Img = await readFileAsBase64(fileInput.files[i]);
-                        if(base64Img) editingOfferImages.push(base64Img);
-                    }
-                }
-                await update(ref(db, `offers/${id}`), {
-                    title: document.getElementById('edit-offer-title').value,
-                    price: document.getElementById('edit-offer-price').value,
-                    images: editingOfferImages,
-                    endTime: document.getElementById('edit-offer-time').value,
-                    desc: document.getElementById('edit-offer-desc').value
-                });
-                alert('✅ تم تحديث الإعلان والصور بنجاح!');
-                closeEditModal();
-            } catch(e) {
-                alert('خطأ أثناء التحديث: ' + e.message);
-            }
+            alert('✅ تم التحديث بنجاح!');
+            closeEditItemModal();
         }
 
         function loadSettingsToForm() {
@@ -652,21 +453,17 @@
 
         window.updateSettings = async function(event) {
             event.preventDefault();
-            try {
-                await set(ref(db, 'settings'), {
-                    brandName: document.getElementById('set-brand').value,
-                    heroTitle: document.getElementById('set-title').value,
-                    heroDesc: document.getElementById('set-desc').value,
-                    fontFamily: document.getElementById('set-font').value,
-                    bgColor: document.getElementById('set-bgcolor').value,
-                    textColor: document.getElementById('set-textcolor').value,
-                    orderPhone: document.getElementById('set-order-phone').value,
-                    deliveryPhone: document.getElementById('set-delivery-phone').value
-                });
-                alert('✅ تم تحديث إعدادات الصفحة الرئيسية والمتجر فوراً!');
-            } catch(e) {
-                alert('خطأ: ' + e.message);
-            }
+            await set(ref(db, 'settings'), {
+                brandName: document.getElementById('set-brand').value,
+                heroTitle: document.getElementById('set-title').value,
+                heroDesc: document.getElementById('set-desc').value,
+                fontFamily: document.getElementById('set-font').value,
+                bgColor: document.getElementById('set-bgcolor').value,
+                textColor: document.getElementById('set-textcolor').value,
+                orderPhone: document.getElementById('set-order-phone').value,
+                deliveryPhone: document.getElementById('set-delivery-phone').value
+            });
+            alert('✅ تم تحديث إعدادات المتجر فوراً!');
         }
     </script>
 </body>
