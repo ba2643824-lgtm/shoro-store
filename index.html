@@ -247,8 +247,8 @@
                         <div class="relative h-32 md:h-48 overflow-hidden bg-zinc-950 flex items-center justify-center group cursor-pointer" onclick='openLightbox(\`${imagesJson}\`, parseInt(document.getElementById("img-menu-${item.id}").getAttribute("data-index")))'>
                             <img id="img-menu-${item.id}" data-index="0" data-images='${imagesJson}' src="${item.images[0]}" alt="${item.name}" class="w-full h-32 md:h-48 object-contain hover:scale-105 transition duration-300 p-2" loading="lazy">
                             ${totalImages > 1 ? `
-                                <button onclick="changeImage('menu', '${item.id}', -1,${totalImages}, event)" class="absolute right-1 bg-black/70 text-white px-2 py-0.5 rounded-full text-[10px] z-10">◀</button>
-                                <button onclick="changeImage('menu', '${item.id}', 1,${totalImages}, event)" class="absolute left-1 bg-black/70 text-white px-2 py-0.5 rounded-full text-[10px] z-10">▶</button>
+                                <button onclick="changeImage('menu', '${item.id}', -1, ${totalImages}, event)" class="absolute right-1 bg-black/70 text-white px-2 py-0.5 rounded-full text-[10px] z-10">◀</button>
+                                <button onclick="changeImage('menu', '${item.id}', 1, ${totalImages}, event)" class="absolute left-1 bg-black/70 text-white px-2 py-0.5 rounded-full text-[10px] z-10">▶</button>
                                 <span id="counter-menu-${item.id}" class="absolute bottom-1 left-1 bg-black/80 text-amber-400 text-[10px] px-1.5 py-0.5 rounded font-bold">1 / ${totalImages}</span>
                             ` : ''}
                         </div>
