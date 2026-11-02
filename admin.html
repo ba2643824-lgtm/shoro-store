@@ -55,8 +55,8 @@
                         <input type="text" id="item-price" placeholder="مثال: 100 ر.س" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">رابط الصورة (URL مباشر أو تركها):</label>
-                        <input type="text" id="item-image-url" placeholder="ضع رابط صورة مباشر هنا (http...)" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
+                        <label class="block text-sm font-semibold mb-1">صورة المنتج (من الموبايل/اللاب توب):</label>
+                        <input type="file" id="item-image-file" accept="image/*" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-zinc-950 hover:file:bg-amber-400">
                     </div>
                 </div>
                 <div>
@@ -91,8 +91,8 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold mb-1">رابط صورة العرض (URL مباشر):</label>
-                        <input type="text" id="offer-image-url" placeholder="ضع رابط صورة مباشر هنا" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
+                        <label class="block text-sm font-semibold mb-1">صورة العرض (من الجهاز):</label>
+                        <input type="file" id="offer-image-file" accept="image/*" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-bold file:bg-red-600 file:text-white hover:file:bg-red-500">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-1">وقت انتهاء العرض:</label>
@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    <!-- سكربت النشر السريع المباشر وتفريغ الحقول -->
+    <!-- سكربت الاتصال المباشر بقاعدة البيانات ودعم رفع الصور وتفريغ الحقول -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getDatabase, ref, push, set, remove, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
@@ -132,7 +132,7 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        const db = getDatabase(app, "https://shoro-e4227-default-rtdb.firebaseio.com");
         const ADMIN_PASS = "1234";
 
         window.checkLogin = function(event) {
@@ -148,6 +148,49 @@
             }
         }
 
+        // دالة لضغط الصور لتكون خفيفة وسريعة النشر
+        function compressImage(file) {
+            return new Promise((resolve) => {
+                if (!file) {
+                    resolve('');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 400;
+                        const MAX_HEIGHT = 400;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.6));
+                    };
+                    img.onerror = () => resolve('');
+                };
+                reader.onerror = () => resolve('');
+            });
+        }
+
         window.addItem = async function(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-item');
@@ -155,18 +198,23 @@
             btn.disabled = true;
 
             try {
-                const imgUrl = document.getElementById('item-image-url').value.trim();
+                const fileInput = document.getElementById('item-image-file');
+                let imageUrl = '';
+
+                if (fileInput.files && fileInput.files[0]) {
+                    imageUrl = await compressImage(fileInput.files[0]);
+                }
+
                 const newRef = push(ref(db, 'menu_items'));
                 await set(newRef, {
                     name: document.getElementById('item-name').value,
                     category: document.getElementById('item-category').value,
                     price: document.getElementById('item-price').value || '',
-                    images: imgUrl ? [imgUrl] : [],
+                    images: imageUrl ? [imageUrl] : [],
                     desc: document.getElementById('item-desc').value,
                     createdAt: Date.now()
                 });
 
-                // تفريغ الحقول بالكامل بعد نجاح النشر
                 document.getElementById('add-item-form').reset();
                 alert('✅ تم نشر المنتج بنجاح وتفريغ الحقول!');
             } catch(e) {
@@ -184,18 +232,23 @@
             btn.disabled = true;
 
             try {
-                const imgUrl = document.getElementById('offer-image-url').value.trim();
+                const fileInput = document.getElementById('offer-image-file');
+                let imageUrl = '';
+
+                if (fileInput.files && fileInput.files[0]) {
+                    imageUrl = await compressImage(fileInput.files[0]);
+                }
+
                 const newRef = push(ref(db, 'offers'));
                 await set(newRef, {
                     title: document.getElementById('offer-title').value,
                     price: document.getElementById('offer-price').value,
-                    images: imgUrl ? [imgUrl] : [],
+                    images: imageUrl ? [imageUrl] : [],
                     endTime: document.getElementById('offer-time').value,
                     desc: document.getElementById('offer-desc').value,
                     createdAt: Date.now()
                 });
 
-                // تفريغ الحقول بالكامل بعد نجاح النشر
                 document.getElementById('add-offer-form').reset();
                 alert('🔥 تم نشر العرض بنجاح وتفريغ الحقول!');
             } catch(e) {
