@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    <!-- سكربت الاتصال وضغط الصور تلقائياً -->
+    <!-- سكربت الاتصال وضغط الصور وتفريغ الحقول تلقائياً -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getDatabase, ref, push, set, remove, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
@@ -148,7 +148,7 @@
             }
         }
 
-        // دالة لضغط وتصغير الصورة تلقائياً قبل حفظها لتكون خفيفة وسريعة جداً
+        // دالة لضغط وتصغير الصورة لتجنب أي تعليق
         function compressImage(file) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -158,8 +158,8 @@
                     img.src = event.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 500; // تصغير الأبعاد لضمان سرعة النشر
-                        const MAX_HEIGHT = 500;
+                        const MAX_WIDTH = 400;
+                        const MAX_HEIGHT = 400;
                         let width = img.width;
                         let height = img.height;
 
@@ -179,9 +179,7 @@
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        
-                        // ضغط الجودة بنسبة 70% لتقليل الحجم بشكل كبير
-                        resolve(canvas.toDataURL('image/jpeg', 0.7));
+                        resolve(canvas.toDataURL('image/jpeg', 0.6));
                     };
                 };
             });
@@ -190,7 +188,7 @@
         window.addItem = async function(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-item');
-            btn.innerText = "جاري ضغط الصورة والنشر...";
+            btn.innerText = "جاري النشر الفوري...";
             btn.disabled = true;
 
             try {
@@ -211,8 +209,9 @@
                     createdAt: Date.now()
                 });
 
-                alert('✅ تم نشر المنتج بنجاح في قاعدة البيانات!');
+                // تفريغ الفورم بالكامل بعد نجاح النشر
                 document.getElementById('add-item-form').reset();
+                alert('✅ تم نشر المنتج بنجاح وتفريغ الحقول!');
             } catch(e) {
                 alert('خطأ أثناء النشر: ' + e.message);
             } finally {
@@ -224,7 +223,7 @@
         window.addOffer = async function(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-offer');
-            btn.innerText = "جاري ضغط الصورة ونشر العرض...";
+            btn.innerText = "جاري نشر العرض...";
             btn.disabled = true;
 
             try {
@@ -245,8 +244,9 @@
                     createdAt: Date.now()
                 });
 
-                alert('🔥 تم نشر العرض بنجاح في قاعدة البيانات!');
+                // تفريغ فورم العروض بالكامل بعد نجاح النشر
                 document.getElementById('add-offer-form').reset();
+                alert('🔥 تم نشر العرض بنجاح وتفريغ الحقول!');
             } catch(e) {
                 alert('خطأ أثناء النشر: ' + e.message);
             } finally {
