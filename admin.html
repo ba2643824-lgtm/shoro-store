@@ -13,7 +13,7 @@
     <!-- شاشة تسجيل الدخول -->
     <div id="login-screen" class="max-w-md mx-auto bg-zinc-900 border border-zinc-800 p-8 rounded-2xl shadow-2xl mt-20">
         <h2 class="text-2xl font-black text-amber-500 mb-6 text-center">🔐 تسجيل الدخول لوحة التحكم</h2>
-        <form onsubmit="checkLogin(event)" class="space-y-4">
+        <form id="login-form" class="space-y-4">
             <div>
                 <label class="block text-sm font-semibold mb-2">كلمة المرور:</label>
                 <input type="password" id="admin-pass" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-3 focus:border-amber-500 focus:outline-none" placeholder="••••">
@@ -32,7 +32,7 @@
         <!-- 1. إضافة منتج جديد -->
         <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
             <h3 class="text-xl font-bold text-amber-400 mb-4">🍔 إضافة منتج جديد للقائمة</h3>
-            <form id="add-item-form" onsubmit="addItem(event)" class="space-y-4">
+            <form id="add-item-form" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold mb-1">اسم الصنف:</label>
@@ -55,7 +55,7 @@
                         <input type="text" id="item-price" placeholder="مثال: 100 ر.س" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">صورة المنتج (صورة أو عدة صور):</label>
+                        <label class="block text-sm font-semibold mb-1">صورة المنتج (من الجهاز):</label>
                         <input type="file" id="item-image-file" accept="image/*" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-zinc-950 hover:file:bg-amber-400">
                     </div>
                 </div>
@@ -78,7 +78,7 @@
         <!-- 3. إضافة عرض جديد -->
         <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl">
             <h3 class="text-xl font-bold text-amber-400 mb-4">🔥 إضافة إعلان أو عرض جديد</h3>
-            <form id="add-offer-form" onsubmit="addOffer(event)" class="space-y-4">
+            <form id="add-offer-form" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-semibold mb-1">عنوان العرض:</label>
@@ -91,7 +91,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold mb-1">صورة العرض (صورة أو عدة صور):</label>
+                        <label class="block text-sm font-semibold mb-1">صورة العرض (من الجهاز):</label>
                         <input type="file" id="offer-image-file" accept="image/*" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-bold file:bg-red-600 file:text-white hover:file:bg-red-500">
                     </div>
                     <div>
@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    <!-- سكربت الاتصال المعالج والمعتمد -->
+    <!-- سكربت التشغيل والربط البرمجي السليم -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getDatabase, ref, push, set, remove, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
@@ -135,7 +135,8 @@
         const db = getDatabase(app, "https://shoro-e4227-default-rtdb.firebaseio.com");
         const ADMIN_PASS = "1234";
 
-        window.checkLogin = function(event) {
+        // تسجيل الدخول
+        document.getElementById('login-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const pass = document.getElementById('admin-pass').value;
             if(pass === ADMIN_PASS) {
@@ -146,9 +147,9 @@
             } else {
                 alert('كلمة المرور غير صحيحة! (استخدم 1234)');
             }
-        }
+        });
 
-        // دالة آمنة وسريعة لقراءة الصورة وتجنب أي تعليق
+        // دالة ضغط وتصغير الصورة بأمان تام
         function processImage(file) {
             return new Promise((resolve) => {
                 if (!file) {
@@ -162,7 +163,7 @@
                     img.src = event.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_SIZE = 350;
+                        const MAX_SIZE = 300;
                         let width = img.width;
                         let height = img.height;
 
@@ -190,7 +191,8 @@
             });
         }
 
-        window.addItem = async function(event) {
+        // إضافة منتج جديد وربطه بالحدث البرمجي
+        document.getElementById('add-item-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-item');
             btn.innerText = "جاري النشر الفوري...";
@@ -222,9 +224,10 @@
                 btn.innerText = "إضافة ونشر المنتج فوراً";
                 btn.disabled = false;
             }
-        }
+        });
 
-        window.addOffer = async function(event) {
+        // إضافة عرض جديد وربطه بالحدث البرمجي
+        document.getElementById('add-offer-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-offer');
             btn.innerText = "جاري نشر العرض...";
@@ -256,7 +259,7 @@
                 btn.innerText = "تفعيل ونشر العرض فوراً";
                 btn.disabled = false;
             }
-        }
+        });
 
         function loadAdminItems() {
             onValue(ref(db, 'menu_items'), (snapshot) => {
@@ -275,7 +278,7 @@
                                 <h4 class="font-bold text-amber-400 text-sm">${item.name}</h4>
                                 <span class="text-xs text-zinc-400">القسم: ${item.category} | السعر: ${item.price || 'غير محدد'}</span>
                             </div>
-                            <button onclick="deleteItem('${key}')" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">🗑️ حذف</button>
+                            <button type="button" onclick="deleteItem('${key}')" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">🗑️ حذف</button>
                         </div>
                     `;
                 });
@@ -299,7 +302,7 @@
                                 <h4 class="font-bold text-amber-400 text-sm">${offer.title}</h4>
                                 <span class="text-xs text-zinc-400">السعر: ${offer.price}</span>
                             </div>
-                            <button onclick="deleteOffer('${key}')" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">🗑️ حذف</button>
+                            <button type="button" onclick="deleteOffer('${key}')" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">🗑️ حذف</button>
                         </div>
                     `;
                 });
