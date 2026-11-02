@@ -55,7 +55,7 @@
                         <input type="text" id="item-price" placeholder="مثال: 100 ر.س" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 focus:border-amber-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-1">صورة المنتج (من الموبايل/اللاب توب):</label>
+                        <label class="block text-sm font-semibold mb-1">صورة المنتج (صورة أو عدة صور):</label>
                         <input type="file" id="item-image-file" accept="image/*" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-zinc-950 hover:file:bg-amber-400">
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold mb-1">صورة العرض (من الجهاز):</label>
+                        <label class="block text-sm font-semibold mb-1">صورة العرض (صورة أو عدة صور):</label>
                         <input type="file" id="offer-image-file" accept="image/*" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1.5 text-sm text-zinc-300 focus:border-amber-500 focus:outline-none file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-bold file:bg-red-600 file:text-white hover:file:bg-red-500">
                     </div>
                     <div>
@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    <!-- سكربت الاتصال المباشر بقاعدة البيانات ودعم رفع الصور وتفريغ الحقول -->
+    <!-- سكربت الاتصال المعالج والمعتمد -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getDatabase, ref, push, set, remove, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
@@ -148,8 +148,8 @@
             }
         }
 
-        // دالة لضغط الصور لتكون خفيفة وسريعة النشر
-        function compressImage(file) {
+        // دالة آمنة وسريعة لقراءة الصورة وتجنب أي تعليق
+        function processImage(file) {
             return new Promise((resolve) => {
                 if (!file) {
                     resolve('');
@@ -162,20 +162,19 @@
                     img.src = event.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 400;
-                        const MAX_HEIGHT = 400;
+                        const MAX_SIZE = 350;
                         let width = img.width;
                         let height = img.height;
 
                         if (width > height) {
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
+                            if (width > MAX_SIZE) {
+                                height *= MAX_SIZE / width;
+                                width = MAX_SIZE;
                             }
                         } else {
-                            if (height > MAX_HEIGHT) {
-                                width *= MAX_HEIGHT / height;
-                                height = MAX_HEIGHT;
+                            if (height > MAX_SIZE) {
+                                width *= MAX_SIZE / height;
+                                height = MAX_SIZE;
                             }
                         }
 
@@ -183,7 +182,7 @@
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.6));
+                        resolve(canvas.toDataURL('image/jpeg', 0.5));
                     };
                     img.onerror = () => resolve('');
                 };
@@ -202,7 +201,7 @@
                 let imageUrl = '';
 
                 if (fileInput.files && fileInput.files[0]) {
-                    imageUrl = await compressImage(fileInput.files[0]);
+                    imageUrl = await processImage(fileInput.files[0]);
                 }
 
                 const newRef = push(ref(db, 'menu_items'));
@@ -236,7 +235,7 @@
                 let imageUrl = '';
 
                 if (fileInput.files && fileInput.files[0]) {
-                    imageUrl = await compressImage(fileInput.files[0]);
+                    imageUrl = await processImage(fileInput.files[0]);
                 }
 
                 const newRef = push(ref(db, 'offers'));
